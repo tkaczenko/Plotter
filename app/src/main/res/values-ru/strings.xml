@@ -1,0 +1,9 @@
+<resources>
+    <string name="edit_preferences">Настройки</string>
+    <string name="coordinate_settings">Декартова система координат</string>
+    <string name="minX">Минимальный X</string>
+    <string name="maxX">Максимальный X</string>
+    <string name="minY">Минимальный Y</string>
+    <string name="maxY">Максимальный Y</string>
+    <string name="accept">Принять</string>
+</resources>

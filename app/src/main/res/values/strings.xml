@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name" translatable="false">Plotter</string>
+    <string name="edit_preferences">Edit settings</string>
+    <string name="coordinate_settings">Cartesian coordinate system</string>
+    <string name="minX">Minimum of X</string>
+    <string name="maxX">Maximum of X</string>
+    <string name="minY">Minimum of Y</string>
+    <string name="maxY">Maximum of Y</string>
+    <string name="accept">Accept</string>
+    <string name="title_activity_plot">Plotter</string>
+    <string name="title_activity_preferences">Preferences</string>
+</resources>
