@@ -6,4 +6,5 @@
     <string name="minY">Минимальный Y</string>
     <string name="maxY">Максимальный Y</string>
     <string name="accept">Принять</string>
+    <string name="data_error">Неверные параметры. Пожалуйста, проверти введенные данные</string>
 </resources>

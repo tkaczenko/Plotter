@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".PlotActivity"
+            android:name=".activities.PlotActivity"
             android:label="@string/title_activity_plot"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,13 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PreferencesActivity"
+            android:name=".activities.PreferencesActivity"
             android:label="@string/title_activity_preferences"
-            android:parentActivityName=".PlotActivity"
+            android:parentActivityName=".activities.PlotActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="PlotActivity" />
+                android:value=".activities.PlotActivity" />
         </activity>
     </application>
 

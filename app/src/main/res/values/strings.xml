@@ -9,4 +9,5 @@
     <string name="accept">Accept</string>
     <string name="title_activity_plot">Plotter</string>
     <string name="title_activity_preferences">Preferences</string>
+    <string name="data_error">Illegal parameters. Please, check Coordinate settings</string>
 </resources>

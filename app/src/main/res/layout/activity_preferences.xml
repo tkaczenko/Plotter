@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="io.github.tkaczenko.plotter.PreferencesActivity">
+    tools:context="io.github.tkaczenko.plotter.activities.PreferencesActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -43,7 +43,7 @@
                 android:text="@string/minX" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editMinX"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
@@ -62,7 +62,7 @@
                 android:text="@string/maxX" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editMaxX"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
@@ -83,7 +83,7 @@
                 android:text="@string/minY" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/editMinY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
@@ -102,7 +102,7 @@
                 android:text="@string/maxY" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/editMaxY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"

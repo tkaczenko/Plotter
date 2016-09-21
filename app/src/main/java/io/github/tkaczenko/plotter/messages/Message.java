@@ -1,4 +1,4 @@
-package io.github.tkaczenko.plotter.graphics;
+package io.github.tkaczenko.plotter.messages;
 
 import android.os.Parcel;
 import android.os.Parcelable;
