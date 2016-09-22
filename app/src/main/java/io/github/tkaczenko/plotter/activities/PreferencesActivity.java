@@ -25,7 +25,7 @@ public class PreferencesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
-        Message message = getIntent().getParcelableExtra("coordinate_settings");
+        Message message = getIntent().getParcelableExtra(PlotActivity.EXTRA_MESSAGE);
 
         editMinX = (EditText) findViewById(R.id.editMinX);
         editMinX.setText(Double.toString(message.getMinX()));
@@ -48,7 +48,7 @@ public class PreferencesActivity extends AppCompatActivity {
         message.setMaxY(Double.parseDouble(editMaxY.getText().toString()));
 
         Intent intent = new Intent();
-        intent.putExtra("coordinate_settings", message);
+        intent.putExtra(PlotActivity.EXTRA_MESSAGE, message);
         setResult(RESULT_OK, intent);
         finish();
     }

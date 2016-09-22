@@ -43,7 +43,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         setWillNotDraw(false);
         if (drawThread == null) {
-            drawThread = new DrawThread(getHolder());
+            drawThread = new DrawThread(holder);
             drawThread.setRunning(true);
             drawThread.setPoints(points);
             drawThread.start();
