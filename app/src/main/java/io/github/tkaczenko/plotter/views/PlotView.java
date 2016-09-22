@@ -8,6 +8,7 @@ import android.view.SurfaceView;
 import java.util.List;
 
 import io.github.tkaczenko.plotter.graphics.Point;
+import io.github.tkaczenko.plotter.graphics.ScreenConverter;
 
 /**
  * Custom SurfaceView for drawing axes, grid and plot for math function
@@ -16,6 +17,8 @@ import io.github.tkaczenko.plotter.graphics.Point;
  */
 public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
+
+    private ScreenConverter screenConverter = new ScreenConverter();
 
     private List<Point<Double>> points;
 
@@ -36,11 +39,16 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        System.out.println("Changed");
+        if (drawThread == null) {
+            return;
+        }
+        drawThread.setSurfaceHolder(holder);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        System.out.println ("Created");
         setWillNotDraw(false);
         if (drawThread == null) {
             drawThread = new DrawThread(holder);
@@ -52,6 +60,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        System.out.println("Destroyed");
         if (drawThread != null) {
             boolean retry = true;
             drawThread.setRunning(false);
@@ -63,6 +72,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
                     e.printStackTrace();
                 }
             }
+            drawThread = null;
         }
     }
 
@@ -71,34 +81,46 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void setMinX(double minX) {
-        drawThread.setMinX(minX);
+        screenConverter.setMinX(minX);
     }
 
     public double getMinX() {
-        return drawThread.getMinX();
+        return screenConverter.getMinX();
     }
 
     public void setMaxX(double maxX) {
-        drawThread.setMaxX(maxX);
+        screenConverter.setMaxX(maxX);
     }
 
     public double getMaxX() {
-        return drawThread.getMaxX();
+        return screenConverter.getMaxX();
     }
 
     public void setMinY(double minY) {
+        if (drawThread == null) {
+            return;
+        }
         drawThread.setMinY(minY);
     }
 
     public double getMinY() {
+        if (drawThread == null) {
+            return 0;
+        }
         return drawThread.getMinY();
     }
 
     public void setMaxY(double maxY) {
+        if (drawThread == null) {
+            return;
+        }
         drawThread.setMaxY(maxY);
     }
 
     public double getMaxY() {
+        if (drawThread == null) {
+            return 0;
+        }
         return drawThread.getMaxY();
     }
 

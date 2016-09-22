@@ -58,22 +58,28 @@ public class DrawThread extends Thread {
     public void run() {
         Canvas canvas;
         while (running) {
-            canvas = null;
-            try {
-                canvas = surfaceHolder.lockCanvas(null);
-                if (canvas == null) {
-                    continue;
-                }
-                init(canvas);
-                fillBackground(canvas);
-                drawAxes(canvas);
-                drawPlot(canvas);
-            } finally {
-                if (canvas != null) {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+            synchronized (this) {
+                canvas = null;
+                try {
+                    canvas = surfaceHolder.lockCanvas(null);
+                    if (canvas == null) {
+                        continue;
+                    }
+                    init(canvas);
+                    fillBackground(canvas);
+                    drawAxes(canvas);
+                    drawPlot(canvas);
+                } finally {
+                    if (canvas != null) {
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+                    }
                 }
             }
         }
+    }
+
+    public synchronized void setSurfaceHolder(SurfaceHolder surfaceHolder) {
+        this.surfaceHolder = surfaceHolder;
     }
 
     private void init(Canvas canvas) {
