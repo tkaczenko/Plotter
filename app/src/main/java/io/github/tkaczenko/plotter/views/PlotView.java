@@ -18,7 +18,7 @@ import io.github.tkaczenko.plotter.graphics.ScreenConverter;
 public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
 
-    private ScreenConverter screenConverter = new ScreenConverter();
+    private ScreenConverter screenConverter;
 
     private List<Point<Double>> points;
 
@@ -39,7 +39,6 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        System.out.println("Changed");
         if (drawThread == null) {
             return;
         }
@@ -48,10 +47,10 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        System.out.println ("Created");
         setWillNotDraw(false);
         if (drawThread == null) {
             drawThread = new DrawThread(holder);
+            drawThread.setScreenConverter(screenConverter);
             drawThread.setRunning(true);
             drawThread.setPoints(points);
             drawThread.start();
@@ -60,7 +59,6 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        System.out.println("Destroyed");
         if (drawThread != null) {
             boolean retry = true;
             drawThread.setRunning(false);
@@ -97,31 +95,22 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void setMinY(double minY) {
-        if (drawThread == null) {
-            return;
-        }
-        drawThread.setMinY(minY);
+        screenConverter.setMinY(minY);
     }
 
     public double getMinY() {
-        if (drawThread == null) {
-            return 0;
-        }
-        return drawThread.getMinY();
+        return screenConverter.getMinY();
     }
 
     public void setMaxY(double maxY) {
-        if (drawThread == null) {
-            return;
-        }
-        drawThread.setMaxY(maxY);
+        screenConverter.setMaxY(maxY);
     }
 
     public double getMaxY() {
-        if (drawThread == null) {
-            return 0;
-        }
-        return drawThread.getMaxY();
+        return screenConverter.getMaxY();
     }
 
+    public void setScreenConverter(ScreenConverter screenConverter) {
+        this.screenConverter = screenConverter;
+    }
 }

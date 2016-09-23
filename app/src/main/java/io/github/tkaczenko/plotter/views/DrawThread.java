@@ -21,15 +21,10 @@ public class DrawThread extends Thread {
     public static final double DEFAULT_MIN_Y = -5.0;
     public static final double DEFAULT_MAX_Y = 5.0;
 
-    private double minX = DEFAULT_MIN_X;
-    private double maxX = DEFAULT_MAX_X;
-    private double minY = DEFAULT_MIN_Y;
-    private double maxY = DEFAULT_MAX_Y;
-
     private boolean running = false;
     private SurfaceHolder surfaceHolder;
 
-    private ScreenConverter screenConverter = new ScreenConverter();
+    private ScreenConverter screenConverter;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private List<Point<Double>> points;
 
@@ -97,11 +92,6 @@ public class DrawThread extends Thread {
     private void initConverter(Canvas canvas) {
         screenConverter.setWidth(canvas.getWidth());
         screenConverter.setHeight(canvas.getHeight());
-
-        screenConverter.setMinX(minX);
-        screenConverter.setMaxX(maxX);
-        screenConverter.setMinY(minY);
-        screenConverter.setMaxY(maxY);
     }
 
     private void fillBackground(Canvas canvas) {
@@ -251,35 +241,7 @@ public class DrawThread extends Thread {
         this.points = points;
     }
 
-    public double getMinX() {
-        return minX;
-    }
-
-    public void setMinX(double minX) {
-        this.minX = minX;
-    }
-
-    public double getMaxX() {
-        return maxX;
-    }
-
-    public void setMaxX(double maxX) {
-        this.maxX = maxX;
-    }
-
-    public double getMinY() {
-        return minY;
-    }
-
-    public void setMinY(double minY) {
-        this.minY = minY;
-    }
-
-    public double getMaxY() {
-        return maxY;
-    }
-
-    public void setMaxY(double maxY) {
-        this.maxY = maxY;
+    public void setScreenConverter(ScreenConverter screenConverter) {
+        this.screenConverter = screenConverter;
     }
 }

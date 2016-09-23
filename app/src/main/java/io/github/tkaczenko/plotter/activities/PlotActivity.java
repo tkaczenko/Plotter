@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import io.github.tkaczenko.plotter.R;
+import io.github.tkaczenko.plotter.graphics.ScreenConverter;
 import io.github.tkaczenko.plotter.math.Function;
 import io.github.tkaczenko.plotter.math.FunctionTabulator;
 import io.github.tkaczenko.plotter.messages.Message;
+import io.github.tkaczenko.plotter.views.DrawThread;
 import io.github.tkaczenko.plotter.views.PlotView;
 
 /**
@@ -19,6 +21,8 @@ import io.github.tkaczenko.plotter.views.PlotView;
  */
 public class PlotActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "coordinate_settings";
+
+    private ScreenConverter screenConverter = new ScreenConverter();
 
     private Function function = new Function() {
         @Override
@@ -40,20 +44,26 @@ public class PlotActivity extends AppCompatActivity {
 
         plotView = (PlotView) findViewById(R.id.plot_view);
 
+        screenConverter.setMinX(DrawThread.DEFAULT_MIN_X);
+        screenConverter.setMaxX(DrawThread.DEFAULT_MAX_X);
+        screenConverter.setMinY(DrawThread.DEFAULT_MIN_Y);
+        screenConverter.setMaxY(DrawThread.DEFAULT_MAX_Y);
+
         FunctionTabulator functionTabulator = new FunctionTabulator(function);
         functionTabulator.setFrom(1.0);
         functionTabulator.setTo(4.5);
         functionTabulator.setStepCount(1000);
 
         plotView.setPoints(functionTabulator.tabulate());
+        plotView.setScreenConverter(screenConverter);
     }
 
     public void onClick(View v) {
         Message message = new Message();
-        message.setMinX(plotView.getMinX());
-        message.setMaxX(plotView.getMaxX());
-        message.setMinY(plotView.getMinY());
-        message.setMaxY(plotView.getMaxY());
+        message.setMinX(screenConverter.getMinX());
+        message.setMaxX(screenConverter.getMaxX());
+        message.setMinY(screenConverter.getMinY());
+        message.setMaxY(screenConverter.getMaxY());
 
         Intent intent = new Intent(this, PreferencesActivity.class);
         intent.putExtra(EXTRA_MESSAGE, message);
