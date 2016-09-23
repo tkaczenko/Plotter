@@ -38,16 +38,35 @@ public class PlotActivity extends AppCompatActivity {
     private PlotView plotView;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Message message = new Message();
+        message.setMinX(screenConverter.getMinX());
+        message.setMaxX(screenConverter.getMaxX());
+        message.setMinY(screenConverter.getMinY());
+        message.setMaxY(screenConverter.getMaxY());
+        outState.putParcelable(EXTRA_MESSAGE, message);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plot);
 
         plotView = (PlotView) findViewById(R.id.plot_view);
 
-        screenConverter.setMinX(DrawThread.DEFAULT_MIN_X);
-        screenConverter.setMaxX(DrawThread.DEFAULT_MAX_X);
-        screenConverter.setMinY(DrawThread.DEFAULT_MIN_Y);
-        screenConverter.setMaxY(DrawThread.DEFAULT_MAX_Y);
+        if (savedInstanceState != null) {
+            Message message = savedInstanceState.getParcelable(EXTRA_MESSAGE);
+            screenConverter.setMinX(message.getMinX());
+            screenConverter.setMaxX(message.getMaxX());
+            screenConverter.setMinY(message.getMinY());
+            screenConverter.setMaxY(message.getMaxY());
+        } else {
+            screenConverter.setMinX(DrawThread.DEFAULT_MIN_X);
+            screenConverter.setMaxX(DrawThread.DEFAULT_MAX_X);
+            screenConverter.setMinY(DrawThread.DEFAULT_MIN_Y);
+            screenConverter.setMaxY(DrawThread.DEFAULT_MAX_Y);
+        }
 
         FunctionTabulator functionTabulator = new FunctionTabulator(function);
         functionTabulator.setFrom(1.0);
