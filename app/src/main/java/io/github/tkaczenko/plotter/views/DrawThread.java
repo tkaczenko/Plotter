@@ -120,7 +120,7 @@ public class DrawThread extends Thread {
         int ticksStop = (int) Math.ceil(screenConverter.toWorldX(canvas.getWidth()));
 
         for (int tick = ticksStart; tick < ticksStop; tick++) {
-            if (tick == 0) {
+            if (tick == 0 || Math.abs(tick) == ticksStop) {
                 continue;
             }
             float tickLeft = (float) screenConverter.toScreenX(tick);
@@ -178,7 +178,7 @@ public class DrawThread extends Thread {
         int ticksStop = (int) Math.ceil(screenConverter.toWorldY(0));
 
         for (int tick = ticksStart; tick < ticksStop; tick++) {
-            if (tick == 0) {
+            if (tick == 0 || Math.abs(tick) == ticksStop) {
                 continue;
             }
             float tickTop = (float) screenConverter.toScreenY(tick);

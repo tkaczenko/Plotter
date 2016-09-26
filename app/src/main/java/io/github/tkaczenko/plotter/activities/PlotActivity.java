@@ -27,11 +27,7 @@ public class PlotActivity extends AppCompatActivity {
     private Function function = new Function() {
         @Override
         public double f(double x) {
-            if (x != 0.0) {
-                return Math.sin(x);
-            } else {
-                return 0.0;
-            }
+            return Math.log10(x * x + 2) / (x + Math.sin(x));
         }
     };
 
