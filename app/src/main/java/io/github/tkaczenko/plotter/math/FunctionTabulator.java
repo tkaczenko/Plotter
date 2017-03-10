@@ -12,29 +12,27 @@ import io.github.tkaczenko.plotter.graphics.Point;
  */
 public class FunctionTabulator {
     private Function function;
-    private int stepCount;
     private double from;
     private double to;
-
-    public FunctionTabulator() {
-
-    }
-
-    public FunctionTabulator(Function function) {
-        this.function = function;
-    }
+    private double step;
 
     public List<Point<Double>> tabulate() {
         if (function == null) {
             return null;
         }
+        int stepCount = calculateSteps();
         List<Point<Double>> points = new ArrayList<>();
-        double delta = (to - from) / stepCount;
-        for (int i = 0; i <= stepCount; i++) {
-            double x = from + delta * i;
-            points.add(new Point(x, function.f(x)));
+        double x = from;
+        points.add(new Point<>(x, 0D));
+        for (int i = 1; i <= stepCount; i++) {
+            x += step;
+            points.add(new Point<>(x, function.f(x)));
         }
         return points;
+    }
+
+    private int calculateSteps() {
+        return (int) ((to - from) / step + 1);
     }
 
     public Function getFunction() {
@@ -43,14 +41,6 @@ public class FunctionTabulator {
 
     public void setFunction(Function function) {
         this.function = function;
-    }
-
-    public int getStepCount() {
-        return stepCount;
-    }
-
-    public void setStepCount(int stepCount) {
-        this.stepCount = stepCount;
     }
 
     public double getFrom() {
@@ -69,4 +59,11 @@ public class FunctionTabulator {
         this.to = to;
     }
 
+    public void setStep(double step) {
+        this.step = step;
+    }
+
+    public double getStep() {
+        return step;
+    }
 }

@@ -6,10 +6,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import io.github.tkaczenko.plotter.R;
+import io.github.tkaczenko.plotter.graphics.Point;
 import io.github.tkaczenko.plotter.graphics.ScreenConverter;
+import io.github.tkaczenko.plotter.math.Euler;
 import io.github.tkaczenko.plotter.math.Function;
 import io.github.tkaczenko.plotter.math.FunctionTabulator;
+import io.github.tkaczenko.plotter.math.GoeloOkumoto;
+import io.github.tkaczenko.plotter.math.RungeKutta;
 import io.github.tkaczenko.plotter.messages.Message;
 import io.github.tkaczenko.plotter.views.DrawThread;
 import io.github.tkaczenko.plotter.views.PlotView;
@@ -20,16 +30,16 @@ import io.github.tkaczenko.plotter.views.PlotView;
  * @author tkaczenko
  */
 public class PlotActivity extends AppCompatActivity {
+    private static final double DEFAULT_A = 76;
+    private static final double DEFAULT_B = 0.076;
+    private static final double DEFAULT_H = 2;
+
     public static final String EXTRA_MESSAGE = "coordinate_settings";
 
     private ScreenConverter screenConverter = new ScreenConverter();
 
-    private Function function = new Function() {
-        @Override
-        public double f(double x) {
-            return Math.log10(x * x + 2) / (x * x + Math.sin(x));
-        }
-    };
+    private FunctionTabulator functionTabulator = new FunctionTabulator();
+    private List<Function> functions = new ArrayList<>();
 
     private PlotView plotView;
 
@@ -64,12 +74,15 @@ public class PlotActivity extends AppCompatActivity {
             screenConverter.setMaxY(DrawThread.DEFAULT_MAX_Y);
         }
 
-        FunctionTabulator functionTabulator = new FunctionTabulator(function);
-        functionTabulator.setFrom(1.0);
-        functionTabulator.setTo(4.5);
-        functionTabulator.setStepCount(1000);
+        initFunctions();
+        initTabulator();
 
-        plotView.setPoints(functionTabulator.tabulate());
+        Map<String, List<Point<Double>>> functionListMap = new LinkedHashMap<>();
+        for (int i = 0; i < functions.size(); i++) {
+            functionTabulator.setFunction(functions.get(0));
+            functionListMap.put(String.valueOf(i), functionTabulator.tabulate());
+        }
+        plotView.setFunctions(functionListMap);
         plotView.setScreenConverter(screenConverter);
     }
 
@@ -105,5 +118,28 @@ public class PlotActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    private void initFunctions() {
+        Euler euler = new Euler();
+        GoeloOkumoto goeloOkumoto = new GoeloOkumoto();
+        RungeKutta rungeKutta = new RungeKutta();
+        euler.setA(DEFAULT_A);
+        euler.setB(DEFAULT_B);
+        euler.setH(DEFAULT_H);
+        goeloOkumoto.setA(DEFAULT_A);
+        goeloOkumoto.setB(DEFAULT_B);
+        rungeKutta.setA(DEFAULT_A);
+        rungeKutta.setB(DEFAULT_B);
+        rungeKutta.setH(DEFAULT_H);
+        functions.add(goeloOkumoto);
+        functions.add(euler);
+        functions.add(rungeKutta);
+    }
+
+    private void initTabulator() {
+        functionTabulator.setFrom(0);
+        functionTabulator.setTo(DEFAULT_A);
+        functionTabulator.setStep(DEFAULT_H);
     }
 }

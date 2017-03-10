@@ -6,6 +6,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.List;
+import java.util.Map;
 
 import io.github.tkaczenko.plotter.graphics.Point;
 import io.github.tkaczenko.plotter.graphics.ScreenConverter;
@@ -21,6 +22,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
     private ScreenConverter screenConverter;
 
     private List<Point<Double>> points;
+    private Map<String, List<Point<Double>>> functions;
 
     public PlotView(Context context) {
         super(context);
@@ -52,7 +54,7 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
             drawThread = new DrawThread(holder);
             drawThread.setScreenConverter(screenConverter);
             drawThread.setRunning(true);
-            drawThread.setPoints(points);
+            drawThread.setFunctions(functions);
             drawThread.start();
         }
     }
@@ -112,5 +114,13 @@ public class PlotView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setScreenConverter(ScreenConverter screenConverter) {
         this.screenConverter = screenConverter;
+    }
+
+    public Map<String, List<Point<Double>>> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(Map<String, List<Point<Double>>> functions) {
+        this.functions = functions;
     }
 }

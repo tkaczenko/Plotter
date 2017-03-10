@@ -5,7 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import io.github.tkaczenko.plotter.graphics.Point;
 import io.github.tkaczenko.plotter.graphics.ScreenConverter;
@@ -27,6 +30,8 @@ public class DrawThread extends Thread {
     private ScreenConverter screenConverter;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private List<Point<Double>> points;
+    private Map<String, List<Point<Double>>> functions;
+    private List<Integer> colors;
 
     private int backgroundColor = Color.WHITE;
 
@@ -214,23 +219,38 @@ public class DrawThread extends Thread {
     }
 
     private void drawPlot(Canvas canvas) {
-        if (points == null || points.size() == 0) {
+        if (functions == null || functions.size() == 0) {
             return;
         }
+        int colorCount = 0;
+        for (Map.Entry<String, List<Point<Double>>> entry : functions.entrySet()) {
+            paint.setColor(colors.get(colorCount));
+            if (colors.get(colorCount) == Color.RED) {
+                paint.setStrokeWidth(5);
+            } else {
+                paint.setStrokeWidth(plotWidth);
+            }
 
-        paint.setColor(plotColor);
-        paint.setStrokeWidth(plotWidth);
+            int startX = screenConverter.toScreenX(entry.getValue().get(0).getX());
+            int startY = screenConverter.toScreenY(entry.getValue().get(0).getY());
 
-        int startX = screenConverter.toScreenX(points.get(0).getX());
-        int startY = screenConverter.toScreenY(points.get(0).getY());
-
-        for (int i = 1; i < points.size(); i++) {
-            int stopX = screenConverter.toScreenX(points.get(i).getX());
-            int stopY = screenConverter.toScreenY(points.get(i).getY());
-            canvas.drawLine(startX, startY, stopX, stopY, paint);
-            startX = stopX;
-            startY = stopY;
+            for (int i = 1; i < entry.getValue().size(); i++) {
+                int stopX = screenConverter.toScreenX(entry.getValue().get(i).getX());
+                int stopY = screenConverter.toScreenY(entry.getValue().get(i).getY());
+                canvas.drawLine(startX, startY, stopX, stopY, paint);
+                startX = stopX;
+                startY = stopY;
+            }
+            colorCount++;
         }
+    }
+
+    private int generateColor(Random random) {
+        int red = random.nextInt(256);
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+
+        return Color.rgb(red, green, blue);
     }
 
     public void setRunning(boolean running) {
@@ -243,5 +263,26 @@ public class DrawThread extends Thread {
 
     public void setScreenConverter(ScreenConverter screenConverter) {
         this.screenConverter = screenConverter;
+    }
+
+    public Map<String, List<Point<Double>>> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(Map<String, List<Point<Double>>> functions) {
+        this.functions = functions;
+        this.colors = new ArrayList<>(functions.size());
+        Random random = new Random(System.currentTimeMillis());
+        colors.add(Color.RED);
+        colors.add(Color.BLUE);
+        colors.add(Color.GREEN);
+        /*for (int i = 0; i < functions.size(); i++) {
+            int color = generateColor(random);
+            while (color == Color.WHITE || color == Color.BLACK || color == Color.GRAY
+                    || color == Color.LTGRAY || color == Color.DKGRAY || color == Color.TRANSPARENT) {
+                color = generateColor(random);
+            }
+            colors.add(color);
+        }*/
     }
 }

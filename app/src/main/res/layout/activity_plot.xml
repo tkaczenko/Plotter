@@ -16,6 +16,35 @@
         android:layout_above="@+id/edit_button"
         android:layout_alignParentLeft="true" />
 
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/cbPlot1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:text="Plot 1"/>
+            <CheckBox
+                android:id="@+id/cbPlot2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:text="Plot 2"/>
+            <CheckBox
+                android:id="@+id/cbPlot3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:text="Plot 3"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <Button
         android:id="@+id/edit_button"
         android:layout_width="match_parent"
