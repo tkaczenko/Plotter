@@ -4,9 +4,13 @@ package io.github.tkaczenko.plotter.math;
  * Created by tkaczenko on 09.03.17.
  */
 
-public class RungeKutta implements Function {
-    private double a, b, h;
-    private double k1, k2, k3, k4, delta, previous = 0;
+public class RungeKutta extends DifferentialEquation {
+    private double k1;
+    private double k2;
+    private double k3;
+    private double k4;
+    private double delta;
+    private double previous = 0;
 
     @Override
     public double f(double x) {
@@ -38,27 +42,7 @@ public class RungeKutta implements Function {
         return delta = h / 6 * (k1 + 2 * k2 + 2 * k3 + k4);
     }
 
-    public double getA() {
-        return a;
-    }
-
-    public void setA(double a) {
-        this.a = a;
-    }
-
-    public double getB() {
-        return b;
-    }
-
-    public void setB(double b) {
-        this.b = b;
-    }
-
-    public double getH() {
-        return h;
-    }
-
-    public void setH(double h) {
-        this.h = h;
+    public void clear() {
+        this.previous = 0;
     }
 }

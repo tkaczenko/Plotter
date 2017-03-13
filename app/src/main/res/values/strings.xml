@@ -10,4 +10,8 @@
     <string name="title_activity_plot">Plotter</string>
     <string name="title_activity_preferences">Preferences</string>
     <string name="data_error">Illegal parameters. Please, check Coordinate settings</string>
+    <string name="goelo_okomoto">Goelo-Okomoto</string>
+    <string name="euler">Euler</string>
+    <string name="runge_kutta">Runge-Kutta</string>
+    <string name="draw">Draw</string>
 </resources>

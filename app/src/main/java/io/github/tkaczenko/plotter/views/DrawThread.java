@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import io.github.tkaczenko.plotter.graphics.NiceScale;
 import io.github.tkaczenko.plotter.graphics.Point;
 import io.github.tkaczenko.plotter.graphics.ScreenConverter;
 
@@ -19,10 +20,10 @@ import io.github.tkaczenko.plotter.graphics.ScreenConverter;
  * @author tkaczenko
  */
 public class DrawThread extends Thread {
-    public static final double DEFAULT_MIN_X = -5.0;
-    public static final double DEFAULT_MAX_X = 5.0;
-    public static final double DEFAULT_MIN_Y = -5.0;
-    public static final double DEFAULT_MAX_Y = 5.0;
+    public static final double DEFAULT_MIN_X = -10;
+    public static final double DEFAULT_MAX_X = 80;
+    public static final double DEFAULT_MIN_Y = -10;
+    public static final double DEFAULT_MAX_Y = 80;
 
     private boolean running = false;
     private SurfaceHolder surfaceHolder;
@@ -38,9 +39,9 @@ public class DrawThread extends Thread {
     //Axes
     private int axesColor = Color.BLACK;
     private float axesWidth = 1.5F;
-    private float arrowSize = 10.0F;
+    private float arrowSize = 20.0F;
     private float tickSize = 10.0F;
-    private float textSize = 10.0F;
+    private float textSize = 20.0F;
 
     //Plot
     private int plotColor = Color.BLUE;
@@ -121,10 +122,14 @@ public class DrawThread extends Thread {
                 paint);
 
         //Drawing ticks and signs
-        int ticksStart = (int) Math.floor(screenConverter.toWorldX(0));
-        int ticksStop = (int) Math.ceil(screenConverter.toWorldX(canvas.getWidth()));
+        NiceScale niceScale = new NiceScale(
+                Math.floor(screenConverter.toWorldX(0)),
+                Math.floor(screenConverter.toWorldX(canvas.getWidth()))
+        );
+        int ticksStart = (int) Math.floor(niceScale.getNiceMin());
+        int ticksStop = (int) Math.ceil(niceScale.getNiceMax());
 
-        for (int tick = ticksStart; tick < ticksStop; tick++) {
+        for (int tick = ticksStart; tick < ticksStop; tick+=niceScale.getTickSpacing()) {
             if (tick == 0 || Math.abs(tick) == ticksStop) {
                 continue;
             }
@@ -148,10 +153,15 @@ public class DrawThread extends Thread {
         paint.setColor(gridColor);
         paint.setStrokeWidth(gridWidth);
 
-        int gridStart = (int) Math.floor(screenConverter.toWorldX(0));
-        int gridStop = (int) Math.ceil(screenConverter.toWorldX(canvas.getWidth()));
+        NiceScale niceScale = new NiceScale(
+                Math.floor(screenConverter.toWorldX(0)),
+                Math.floor(screenConverter.toWorldX(canvas.getWidth()))
+        );
 
-        for (int grid = gridStart; grid < gridStop; grid++) {
+        int gridStart = (int) Math.floor(niceScale.getNiceMin());
+        int gridStop = (int) Math.ceil(niceScale.getNiceMax());
+
+        for (int grid = gridStart; grid < gridStop; grid += niceScale.getTickSpacing()) {
             if (grid == 0) {
                 continue;
             }
@@ -179,10 +189,14 @@ public class DrawThread extends Thread {
                 paint);
 
         //Drawing ticks and signs
-        int ticksStart = (int) Math.floor(screenConverter.toWorldY(canvas.getHeight()));
-        int ticksStop = (int) Math.ceil(screenConverter.toWorldY(0));
+        NiceScale niceScale = new NiceScale(
+                Math.floor(screenConverter.toWorldY(canvas.getHeight())),
+                Math.floor(screenConverter.toWorldY(0))
+        );
+        int ticksStart = (int) Math.floor(niceScale.getNiceMin());
+        int ticksStop = (int) Math.ceil(niceScale.getNiceMax());;
 
-        for (int tick = ticksStart; tick < ticksStop; tick++) {
+        for (int tick = ticksStart; tick < ticksStop; tick += niceScale.getTickSpacing()) {
             if (tick == 0 || Math.abs(tick) == ticksStop) {
                 continue;
             }
@@ -206,10 +220,15 @@ public class DrawThread extends Thread {
         paint.setColor(gridColor);
         paint.setStrokeWidth(gridWidth);
 
-        int gridStart = (int) Math.floor(screenConverter.toWorldY(canvas.getHeight()));
-        int gridStop = (int) Math.ceil(screenConverter.toWorldY(0));
+        NiceScale niceScale = new NiceScale(
+                Math.floor(screenConverter.toWorldY(canvas.getHeight())),
+                Math.floor(screenConverter.toWorldY(0))
+        );
 
-        for (int grid = gridStart; grid < gridStop; grid++) {
+        int gridStart = (int) Math.floor(niceScale.getNiceMin());
+        int gridStop = (int) Math.ceil(niceScale.getNiceMax());
+
+        for (int grid = gridStart; grid < gridStop; grid += niceScale.getTickSpacing()) {
             if (grid == 0) {
                 continue;
             }
@@ -225,11 +244,7 @@ public class DrawThread extends Thread {
         int colorCount = 0;
         for (Map.Entry<String, List<Point<Double>>> entry : functions.entrySet()) {
             paint.setColor(colors.get(colorCount));
-            if (colors.get(colorCount) == Color.RED) {
-                paint.setStrokeWidth(5);
-            } else {
-                paint.setStrokeWidth(plotWidth);
-            }
+            paint.setStrokeWidth(plotWidth);
 
             int startX = screenConverter.toScreenX(entry.getValue().get(0).getX());
             int startY = screenConverter.toScreenY(entry.getValue().get(0).getY());
@@ -270,19 +285,19 @@ public class DrawThread extends Thread {
     }
 
     public void setFunctions(Map<String, List<Point<Double>>> functions) {
+        if (functions == null) {
+            return;
+        }
         this.functions = functions;
         this.colors = new ArrayList<>(functions.size());
         Random random = new Random(System.currentTimeMillis());
-        colors.add(Color.RED);
-        colors.add(Color.BLUE);
-        colors.add(Color.GREEN);
-        /*for (int i = 0; i < functions.size(); i++) {
+        for (int i = 0; i < functions.size(); i++) {
             int color = generateColor(random);
             while (color == Color.WHITE || color == Color.BLACK || color == Color.GRAY
                     || color == Color.LTGRAY || color == Color.DKGRAY || color == Color.TRANSPARENT) {
                 color = generateColor(random);
             }
             colors.add(color);
-        }*/
+        }
     }
 }

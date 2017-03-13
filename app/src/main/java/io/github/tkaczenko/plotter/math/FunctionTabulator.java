@@ -22,11 +22,12 @@ public class FunctionTabulator {
         }
         int stepCount = calculateSteps();
         List<Point<Double>> points = new ArrayList<>();
-        double x = from;
+        double y, x = from;
         points.add(new Point<>(x, 0D));
-        for (int i = 1; i <= stepCount; i++) {
+        for (int i = 1; i < stepCount; i++) {
             x += step;
-            points.add(new Point<>(x, function.f(x)));
+            y = function.f(x);
+            points.add(new Point<>(x, y));
         }
         return points;
     }

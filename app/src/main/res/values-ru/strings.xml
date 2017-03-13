@@ -7,4 +7,8 @@
     <string name="maxY">Максимальный Y</string>
     <string name="accept">Принять</string>
     <string name="data_error">Неверные параметры. Пожалуйста, проверти введенные данные</string>
+    <string name="goelo_okomoto">Гоело-Окомото</string>
+    <string name="euler">Ейлера</string>
+    <string name="runge_kutta">Рунге-Кутта</string>
+    <string name="draw">Рисовать</string>
 </resources>

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="io.github.tkaczenko.plotter.activities.PlotActivity">
 
     <io.github.tkaczenko.plotter.views.PlotView
         android:id="@+id/plot_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/edit_button"
-        android:layout_alignParentLeft="true" />
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -24,34 +22,40 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <CheckBox
                 android:id="@+id/cbPlot1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                android:text="Plot 1"/>
+                android:text="@string/goelo_okomoto" />
+
             <CheckBox
                 android:id="@+id/cbPlot2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                android:text="Plot 2"/>
+                android:text="@string/euler" />
+
             <CheckBox
                 android:id="@+id/cbPlot3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                android:text="Plot 3"/>
+                android:text="@string/runge_kutta" />
         </LinearLayout>
     </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/btnDraw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/draw" />
 
     <Button
         android:id="@+id/edit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:onClick="onClick"
         android:text="@string/edit_preferences" />
 
-</RelativeLayout>
+</LinearLayout>
